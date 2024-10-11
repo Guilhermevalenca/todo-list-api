@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int             @id @default(autoincrement())
+  name         String
+  email        String          @unique
+  password     String
+  groups       UsersOnGroups[]
+  UsersOnTodos UsersOnTodos[]
+}
+
+model Group {
+  id          Int             @id @default(autoincrement())
+  name        String
+  description String?
+  users       UsersOnGroups[]
+  todos       Todo[]
+}
+
+enum RoleUsersOnGroups {
+  ADMIN
+  USER
+  GUEST
+}
+
+model UsersOnGroups {
+  id      Int               @id @default(autoincrement())
+  userId  Int
+  user    User              @relation(fields: [userId], references: [id])
+  groupId Int
+  group   Group             @relation(fields: [groupId], references: [id])
+  role    RoleUsersOnGroups @default(GUEST)
+}
+
+enum StatusTodo {
+  not_completed
+  completed
+  in_progress
+}
+
+model Todo {
+  id           Int            @id @default(autoincrement())
+  title        String
+  description  String
+  status       StatusTodo     @default(not_completed)
+  groupId      Int
+  group        Group          @relation(fields: [groupId], references: [id])
+  UsersOnTodos UsersOnTodos[]
+}
+
+model UsersOnTodos {
+  id     Int  @id @default(autoincrement())
+  todoId Int
+  todo   Todo @relation(fields: [todoId], references: [id])
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
