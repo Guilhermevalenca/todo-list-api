@@ -1,0 +1,20 @@
+enum StatusTodo {
+    not_completed
+    completed
+    in_progress
+}
+
+type Todo {
+    id: Int!
+    title: String!
+    description: String!
+    status: StatusTodo!
+    groupId: Int!
+    group: Group!
+    users: [UsersOnTodos!]!
+}
+
+type Query {
+    todo(id: Int!): Todo
+    todos: [Todo!]!
+}

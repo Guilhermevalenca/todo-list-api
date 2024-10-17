@@ -37,12 +37,13 @@ enum RoleUsersOnGroups {
 }
 
 model UsersOnGroups {
-  id      Int               @id @default(autoincrement())
   userId  Int
-  user    User              @relation(fields: [userId], references: [id])
+  user    User              @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   groupId Int
-  group   Group             @relation(fields: [groupId], references: [id])
+  group   Group             @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   role    RoleUsersOnGroups @default(GUEST)
+
+  @@id([userId, groupId])
 }
 
 enum StatusTodo {
@@ -52,19 +53,19 @@ enum StatusTodo {
 }
 
 model Todo {
-  id           Int            @id @default(autoincrement())
-  title        String
-  description  String
-  status       StatusTodo     @default(not_completed)
-  groupId      Int
-  group        Group          @relation(fields: [groupId], references: [id])
-  UsersOnTodos UsersOnTodos[]
+  id          Int            @id @default(autoincrement())
+  title       String
+  description String
+  status      StatusTodo     @default(not_completed)
+  groupId     Int
+  group       Group          @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  users       UsersOnTodos[]
 }
 
 model UsersOnTodos {
   id     Int  @id @default(autoincrement())
   todoId Int
-  todo   Todo @relation(fields: [todoId], references: [id])
+  todo   Todo @relation(fields: [todoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId Int
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

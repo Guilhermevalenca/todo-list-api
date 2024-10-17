@@ -1,0 +1,13 @@
+enum RoleUsersOnGroups {
+    ADMIN
+    USER
+    GUEST
+}
+
+type UsersOnGroups {
+    userId: Int!
+    user: User!
+    groupId: Int!
+    group: Group!
+    role: RoleUsersOnGroups!
+}

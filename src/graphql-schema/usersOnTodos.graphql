@@ -1,0 +1,7 @@
+type UsersOnTodos {
+    id: Int!
+    todoId: Int!
+    todo: Todo!
+    userId: Int!
+    user: User!
+}

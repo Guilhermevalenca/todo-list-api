@@ -1,0 +1,11 @@
+type Group {
+    id: Int!
+    name: String!
+    description: String!
+    users: [UsersOnGroups!]!
+}
+
+type Query {
+    group(id: Int!): Group
+    groups: [Group!]!
+}

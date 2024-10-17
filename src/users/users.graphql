@@ -1,10 +1,10 @@
 type User {
     id: Int!
-    name: String
-    email: String
+    name: String!
+    email: String!
+    groups: [UsersOnGroups!]!
 }
 
 type Query {
-    user(id: Int!): User
-    users: [User]
+    user: User
 }
