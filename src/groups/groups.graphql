@@ -3,6 +3,7 @@ type Group {
     name: String!
     description: String!
     users: [UsersOnGroups!]!
+    todos: [Todo!]!
 }
 
 type Query {

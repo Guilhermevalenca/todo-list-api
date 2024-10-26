@@ -1,4 +1,4 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Query, Resolver } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@authGuard';
@@ -9,7 +9,10 @@ export class UsersResolver {
 
   @Query()
   @UseGuards(AuthGuard)
-  async user(@Request() req) {
+  async user(@Context() { req }) {
+    if (!req?.user) {
+      throw new Error('testing');
+    }
     return this.usersService.find(req.user.id);
   }
 }

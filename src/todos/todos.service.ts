@@ -35,9 +35,16 @@ export class TodosService {
     });
   }
 
-  async create(data: Todo): Promise<Todo | null> {
+  async create(data: Todo, users: User[]): Promise<Todo | null> {
     return this.prisma.todo.create({
-      data,
+      data: {
+        ...data,
+        users: {
+          createMany: {
+            data: users.map((user: User) => ({ userId: user.id })),
+          },
+        },
+      },
     });
   }
 

@@ -10,13 +10,14 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
-import { Group, User, UsersOnGroups } from '@prisma/client';
+import { Group, UsersOnGroups } from '@prisma/client';
 import { UsersOnGroupsService } from '../users-on-groups/users-on-groups.service';
 import { ZodValidationPipe } from '@zodValidation';
 import createGroupValidation from '@src/groups/validation-schema/createGroupValidation';
 import { AuthGuard } from '@authGuard';
-import addUserAndRemoveUserGroupValidation from '@src/groups/validation-schema/addUserAndRemoveUserGroupValidation';
 import { GroupsGuard } from '@src/groups/groups.guard';
+import removeUserGroupValidation from '@src/groups/validation-schema/removeUserGroupValidation';
+import addUserGroupValidation from '@src/groups/validation-schema/addUserGroupValidation';
 
 @Controller('groups')
 export class GroupsController {
@@ -46,17 +47,17 @@ export class GroupsController {
   @Post('user')
   @HttpCode(201)
   @UseGuards(AuthGuard, GroupsGuard)
-  @UsePipes(new ZodValidationPipe(addUserAndRemoveUserGroupValidation))
+  @UsePipes(new ZodValidationPipe(addUserGroupValidation))
   async addUser(
-    @Body() data: { groupId: number; userId: number },
+    @Body() data: { groupId: number; email: string },
   ): Promise<UsersOnGroups | null> {
-    return this.usersOnGroupsService.addUser(data.groupId, data.userId);
+    return this.usersOnGroupsService.addUser(data.groupId, data.email);
   }
 
   @Delete('user')
   @HttpCode(200)
   @UseGuards(AuthGuard, GroupsGuard)
-  @UsePipes(new ZodValidationPipe(addUserAndRemoveUserGroupValidation))
+  @UsePipes(new ZodValidationPipe(removeUserGroupValidation))
   async removeUser(
     @Body() data: { groupId: number; userId: number },
   ): Promise<UsersOnGroups | null> {

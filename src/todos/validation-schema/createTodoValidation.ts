@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { PrismaService } from '@prismaService';
 
-export default z
+const todoSchema = z
   .object({
     title: z.string(),
     description: z.string(),
@@ -16,5 +16,18 @@ export default z
         },
       }));
     }),
+  })
+  .required();
+
+const usersSchema = z
+  .object({
+    id: z.number(),
+  })
+  .array();
+
+export default z
+  .object({
+    todo: todoSchema,
+    users: usersSchema,
   })
   .required();

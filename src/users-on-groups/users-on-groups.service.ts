@@ -20,11 +20,19 @@ export class UsersOnGroupsService {
     });
   }
 
-  async addUser(groupId: number, userId: number) {
+  async addUser(groupId: number, email: string) {
     return this.prisma.usersOnGroups.create({
       data: {
-        groupId,
-        userId,
+        group: {
+          connect: {
+            id: groupId,
+          },
+        },
+        user: {
+          connect: {
+            email,
+          },
+        },
       },
     });
   }

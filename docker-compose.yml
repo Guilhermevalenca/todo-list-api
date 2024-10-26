@@ -6,7 +6,7 @@ services:
     container_name: todo-list-nest
     entrypoint: /bin/sh
     ports:
-      - 3000:3000
+      - 80:3000
     working_dir: /srv/app
     volumes:
       - type: bind
