@@ -33,7 +33,7 @@ export class TodosController {
   @UseGuards(AuthGuard)
   @UsePipes(new ZodValidationPipe(createTodoValidation))
   async store(
-    @Body() data: { todo: Todo, users: User[] },
+    @Body() data: { todo: Todo; users: User[] },
   ): Promise<Todo | null> {
     return this.todosService.create(data.todo, data.users);
   }
@@ -41,10 +41,9 @@ export class TodosController {
   @Put(':id')
   @HttpCode(200)
   @UseGuards(AuthGuard)
-  @UsePipes(new ZodValidationPipe(updateTodoValidation))
   async update(
+    @Body(new ZodValidationPipe(updateTodoValidation)) data: Todo,
     @Param('id') id: string,
-    @Body() data: Todo,
   ): Promise<Todo | null> {
     return this.todosService.update(Number(id), data);
   }
