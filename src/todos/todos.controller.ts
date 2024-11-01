@@ -55,7 +55,7 @@ export class TodosController {
     return this.todosService.delete(Number(id));
   }
 
-  @Post('user/:id')
+  @Post(':id/user')
   @HttpCode(201)
   @UseGuards(AuthGuard, AddUserTodosGuard)
   async addUser(
@@ -65,7 +65,14 @@ export class TodosController {
     return this.usersOnTodosService.addUser(Number(id), data);
   }
 
-  @Delete('user/:id')
+  @Put(':id/user')
+  @HttpCode(204)
+  @UseGuards(AuthGuard, AddUserTodosGuard)
+  async updateAllUsersInTodo(@Param('id') id: string, @Body() data: User[]) {
+    return this.usersOnTodosService.updateManyUsers(Number(id), data);
+  }
+
+  @Delete(':id/user')
   @HttpCode(200)
   @UseGuards(AuthGuard, RemoveUserTodosGuard)
   async removeUser(@Param('id') id: string): Promise<UsersOnTodos | null> {

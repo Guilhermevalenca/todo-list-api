@@ -22,4 +22,21 @@ export class UsersOnTodosService {
       },
     });
   }
+
+  async updateManyUsers(id: number, users: User[]) {
+    return this.prisma.$transaction(async (prisma) => {
+      await prisma.usersOnTodos.deleteMany({
+        where: {
+          todoId: id,
+        },
+      });
+
+      await prisma.usersOnTodos.createMany({
+        data: users.map((user: User) => ({
+          userId: user.id,
+          todoId: id,
+        })),
+      });
+    });
+  }
 }
