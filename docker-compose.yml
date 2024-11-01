@@ -2,7 +2,7 @@ version: "3.4"
 name: 'todo-list-api'
 services:
   vite_docker:
-    image: node:alpine
+    image: node:20-alpine
     container_name: todo-list-nest
     entrypoint: /bin/sh
     ports:
@@ -22,7 +22,7 @@ services:
     container_name: todo-list-nest-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: app_db
+      MYSQL_DATABASE: app
       MYSQL_USER: user
       MYSQL_PASSWORD: userpassword
     ports:
